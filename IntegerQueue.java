@@ -13,7 +13,14 @@ public class IntegerQueue {
 	
 	public Integer retrieve() {
 		
-		return headOfQueue == null ? null : headOfQueue.retrieve();
+		IntegerElement e = headOfQueue == null ? null : headOfQueue.retrieve();
+		if (e == headOfQueue) {
+			Integer i = e.getValue();
+			headOfQueue = null;
+			return i;
+		} else {
+			return e == null ? null : e.getValue();
+		}
 	}
 	
 	public Integer size() {
@@ -31,6 +38,8 @@ public class IntegerQueue {
 
 		private final Integer value;
 		private IntegerElement nextElement;
+		private IntegerElement prevElement;
+		
 		//
 		private final String printFormat = "%d";
 
@@ -43,11 +52,22 @@ public class IntegerQueue {
 		public void insert(IntegerElement element) {
 
 			nextElement = element;
+			if (element != null) {
+				element.setPrevElement(this);
+			}
 		}
 		
-		public Integer retrieve() {
-			
-			return nextElement == null ? value : nextElement.retrieve();
+		public IntegerElement retrieve() {
+						
+			IntegerElement returnElement = nextElement == null ? this : nextElement.retrieve();
+			if (returnElement != null) {
+				IntegerElement linkedElement =  returnElement.getPrevElement();
+				if (linkedElement != null ) {
+					linkedElement.setNextElement(null);
+				}
+			returnElement.setPrevElement(null);	
+			}
+			return returnElement;
 		}
 
 		public IntegerElement getNextElement() {
@@ -56,6 +76,14 @@ public class IntegerQueue {
 				
 		public void setNextElement(IntegerElement nextElement) {
 			this.nextElement = nextElement;
+		}
+		
+		public IntegerElement getPrevElement() {
+			return prevElement;
+		}
+				
+		public void setPrevElement(IntegerElement prevElement) {
+			this.prevElement = prevElement;
 		}
 		
 		public int getValue() {

@@ -24,6 +24,11 @@ public class Exercise7 {
 		System.out.println("Retrieve end of queue: " + queue.retrieve());
 		System.out.println("Queue size: " + queue.size());
 		
+		int qSize = queue.size();
+		for (int i = 0; i < qSize; i++) {
+			queue.retrieve();
+		}
+		System.out.println("Queue size is now " + queue.size());
 		
     }
 }
